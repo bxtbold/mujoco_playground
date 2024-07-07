@@ -1,10 +1,10 @@
 import os
 
-
 def get_pkg_dir():
-    return os.path.dirname(
-        os.path.dirname(
-            os.path.realpath(__file__)
+    return os.path.abspath(
+        os.path.join(
+            os.path.realpath(__file__),
+            "../../.."
         )
     )
 
