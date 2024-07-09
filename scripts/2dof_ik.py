@@ -29,7 +29,7 @@ class Simulate2DOF(GenericSim):
         sensor_data = self.data.site_xpos[0]
         radius = 0.5
         center = np.array([sensor_data[0] - radius, sensor_data[1]])
-        phi = np.linspace(0, 2 * np.pi, self.num)
+        phi = np.linspace(0, 2 * np.pi, self.iter_num)
         self.x_ref = center[0] + radius * np.cos(phi)
         self.y_ref = center[1] + radius * np.sin(phi)
 

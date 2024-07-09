@@ -1,5 +1,6 @@
 import mujoco as mj
 import numpy as np
+from math import inf
 from mujoco.glfw import glfw
 
 class GenericSim(object):
@@ -15,23 +16,23 @@ class GenericSim(object):
             self._init_visual()
             self.set_camera_angle()
 
-    def run_simulation(self):
+    def run_simulation(self, dt = 0.01, iter_num = inf):
         self.t = 0
-        self.dt = 0.01
-        self.num = 250
+        self.dt = dt
+        self.iter_num = iter_num
 
         self.init_sim_state()
 
-        step = 0
+        self.step = 0
         while self._loop_condition():
             time_prev = self.t
 
-            step += 1
-            if step > self.num - 1:
+            self.step += 1
+            if self.step > self.iter_num - 1:
                 break
 
             while self.t - time_prev < 1.0 / 60.0:
-                self.control_logic(step)
+                self.control_logic()
                 mj.mj_step(self.model, self.data)  # Use mj_step for the full physics step
                 self.t += self.dt
 
@@ -39,7 +40,7 @@ class GenericSim(object):
 
         self._terminate_window()
 
-    def control_logic(self, step):
+    def control_logic(self):
         pass
 
     def init_sim_state(self):

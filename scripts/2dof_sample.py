@@ -19,8 +19,8 @@ class Simulate2DOF(GenericSim):
         self.q1_start = 0
         self.q0_end = 1.57
         self.q1_end = 1.57
-        self.q0 = np.linspace(self.q0_start, self.q0_end, self.num)
-        self.q1 = np.linspace(self.q1_start, self.q1_end, self.num)
+        self.q0 = np.linspace(self.q0_start, self.q0_end, self.iter_num)
+        self.q1 = np.linspace(self.q1_start, self.q1_end, self.iter_num)
         self.data.qpos[0] = self.q0_start
         self.data.qpos[1] = self.q1_start
 
