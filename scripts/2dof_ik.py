@@ -33,7 +33,7 @@ class Simulate2DOF(GenericSim):
         self.x_ref = center[0] + radius * np.cos(phi)
         self.y_ref = center[1] + radius * np.sin(phi)
 
-    def control_logic(self, step=0):
+    def control_logic(self):
         # get sensor data
         sensor_data = self.data.site_xpos[0]
         # adding random noise to the measured data
@@ -43,19 +43,22 @@ class Simulate2DOF(GenericSim):
         self.y_data.append(y_sensor_data)
 
         # compute Jacobian
-        jacp = np.zeros((3, 2))  # 3 is for xyz for two angles
+        jacp = np.zeros((3, self.model.nv))  # 3 is for xyz for two angles
         jacr = None
         mj.mj_jac(self.model, self.data, jacp, jacr, sensor_data, 2)
-        J = jacp[[0, 1], :]
 
         # compute Jacobian IK
-        J_inv = np.linalg.inv(J)
+        jacp_inv = np.linalg.pinv(jacp)
 
         # compute dX
-        dX = np.array([self.x_ref[step] - x_sensor_data, self.y_ref[step] - y_sensor_data])
+        dX = np.array([
+            self.x_ref[self.step] - x_sensor_data,
+            self.y_ref[self.step] - y_sensor_data,
+            0.0,
+        ])
 
-        # compute dq = J_inv x dX
-        dq = J_inv.dot(dX)
+        # compute dq = jacp_inv x dX
+        dq = jacp_inv.dot(dX)
 
         # update theta1, theta2
         self.theta1 += dq[0]

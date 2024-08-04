@@ -1,6 +1,5 @@
 import mujoco as mj
 import numpy as np
-from math import inf
 from mujoco.glfw import glfw
 
 class GenericSim(object):
@@ -16,7 +15,7 @@ class GenericSim(object):
             self._init_visual()
             self.set_camera_angle()
 
-    def run_simulation(self, dt = 0.01, iter_num = inf):
+    def run_simulation(self, dt = 0.01, iter_num = 250):
         self.t = 0
         self.dt = dt
         self.iter_num = iter_num
